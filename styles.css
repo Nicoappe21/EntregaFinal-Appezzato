@@ -1,0 +1,43 @@
+.section-jugadores{
+    display: flex;
+    flex-direction: column;    
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+}
+
+.carta-jugador{
+    border: 2px solid black;
+    color: red;
+    background-color: aquamarine;
+    display: flex;
+    flex-direction: column;
+    margin: 50px;
+    width: 250px;
+    height: 250px;
+    align-items: center;
+}
+
+.carta-jugador button{
+    display: inline;
+   width: fit-content;
+}
+
+#div-jugadores{
+    display:flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: center;
+}
+
+.botones-lista{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content:center ;
+}
+
+.botones-lista button{
+    margin: 10px;
+
+}
