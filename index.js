@@ -84,13 +84,13 @@ const divSectionJugadores= document.getElementById("div-jugadores")
 
 function paginaInicial() {
     botonComenzar.addEventListener("click", iniciarJuego);
-    const storedData = localStorage.getItem("jugadoresElegidos");
-    if (storedData) {
-        jugadoresElegidos = JSON.parse(storedData);
+    const equipoStorage = localStorage.getItem("jugadoresElegidos");
+    if (equipoStorage) {
+        jugadoresElegidos = JSON.parse(equipoStorage);
         jugadoresElegidos.forEach((jugador) => {
-            const index = jugadores.findIndex((item) => item.nombre === jugador.nombre);
-            if (index !== -1) {
-                const botonConvocar = document.querySelectorAll(".convocar")[index];
+            const idx = jugadores.findIndex((item) => item.nombre === jugador.nombre);
+            if (idx !== -1) {
+                const botonConvocar = document.querySelectorAll(".convocar")[idx];
                 botonConvocar.disabled = true;
             }
         });
