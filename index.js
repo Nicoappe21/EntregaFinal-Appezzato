@@ -82,9 +82,19 @@ const divSectionJugadores= document.getElementById("div-jugadores")
 
 
 
-function paginaInicial(){
-    botonComenzar.addEventListener("click", iniciarJuego)
-    localStorage.clear()
+function paginaInicial() {
+    botonComenzar.addEventListener("click", iniciarJuego);
+    const storedData = localStorage.getItem("jugadoresElegidos");
+    if (storedData) {
+        jugadoresElegidos = JSON.parse(storedData);
+        jugadoresElegidos.forEach((jugador) => {
+            const index = jugadores.findIndex((item) => item.nombre === jugador.nombre);
+            if (index !== -1) {
+                const botonConvocar = document.querySelectorAll(".convocar")[index];
+                botonConvocar.disabled = true;
+            }
+        });
+    }
 }
 
 function chequearEquipo(){
@@ -108,12 +118,28 @@ function convocarJugador(idx, botonConvocar) {
     localStorage.setItem("jugadoresElegidos", JSON.stringify(jugadoresElegidos))
 }
 
-function resetear(){
-    location.reload()
-    localStorage.clear()
-}
+function resetear() {
+    jugadores.forEach((jugador) => {
+        jugador.elegido = false;
+    });
 
+    jugadoresElegidos = [];
+
+    const botonesConvocar = document.querySelectorAll(".convocar");
+    botonesConvocar.forEach((boton) => {
+        boton.disabled = false;
+    });
+
+    localStorage.removeItem("jugadoresElegidos");
+
+    const equipoInfo = document.getElementById("equipo-info");
+    equipoInfo.innerHTML = "";
+}
 function mostrarEquipo() {
+    if (jugadoresElegidos.length === 0){
+        alert ("No hay jugadores convocados aún")
+    }
+    else {
     const equipoInfo = document.getElementById("equipo-info");
     equipoInfo.innerHTML = "";
     const listaJugadores = document.createElement("ul");
@@ -124,7 +150,7 @@ function mostrarEquipo() {
     });
     equipoInfo.appendChild(listaJugadores);
 }
-
+}
 function confirmarEquipo(){
     if (jugadoresElegidos.length < 5){
         alert("Elige 5 jugadores para tu equipo")
@@ -141,27 +167,32 @@ function confirmarEquipo(){
     alert("Equipo confirmado")
 } 
 }
-function iniciarJuego(){
-    let usuario = usuarioInput.value
-    if (usuario===""){
-        alert("Escribe un nombre para comenzar")
+function iniciarJuego() {
+    let usuario = usuarioInput.value;
+    if (usuario === "") {
+        alert("Escribe un nombre para comenzar");
     } else {
-        sectionBienvenido.style.display= "none"
-        let nombreUsuario = document.getElementById("titulo-jugadores")
-        nombreUsuario.innerText = ` Bienvenido ${usuario}, ahora eres el DT, elige a tus 5 jugadores`
+        sectionBienvenido.style.display = "none";
+        let nombreUsuario = document.getElementById("titulo-jugadores");
+        nombreUsuario.innerText = ` Bienvenido ${usuario}, ahora eres el DT, elige a tus 5 jugadores`;
 
         jugadores.forEach(function (jugador, index) {
             const cartaJugador = document.createElement("div");
             cartaJugador.className = "carta-jugador";
-        
+
             cartaJugador.innerHTML = `
             <h2>${jugador.nombre}</h2>
             <h3>${jugador.posicion}</h3>
             <h3>${jugador.equipo}</h3>
             <button class="convocar">Convocar</button>
             `;
-        
+
             const botonConvocar = cartaJugador.querySelector("button");
+
+            if (jugadoresElegidos.some((elegido) => elegido.nombre === jugador.nombre)) {
+                botonConvocar.disabled = true;
+            }
+
             if (jugador.elegido) {
                 botonConvocar.disabled = true;
             } else {
@@ -169,30 +200,31 @@ function iniciarJuego(){
                     convocarJugador(index, botonConvocar);
                 });
             }
-        
-            divSectionJugadores.appendChild(cartaJugador);           
+
+            divSectionJugadores.appendChild(cartaJugador);
         });
 
-const seccionBotones = document.querySelector(".botones-lista");
+        const seccionBotones = document.querySelector(".botones-lista");
 
-const botonVerEquipo = document.createElement("button");
-botonVerEquipo.textContent = "Ver Equipo";
-botonVerEquipo.id = "VerEquipo"
+        const botonVerEquipo = document.createElement("button");
+        botonVerEquipo.textContent = "Ver Equipo";
+        botonVerEquipo.id = "VerEquipo";
 
-const botonConfirmarEquipo = document.createElement("button");
-botonConfirmarEquipo.textContent = "Confirmar Equipo";
-botonConfirmarEquipo.id = "confirmar"
+        const botonConfirmarEquipo = document.createElement("button");
+        botonConfirmarEquipo.textContent = "Confirmar Equipo";
+        botonConfirmarEquipo.id = "confirmar";
 
-const botonVolverAEmpezar = document.createElement("button");
-botonVolverAEmpezar.textContent = "Volver a empezar";
-botonVolverAEmpezar.id= "reset"
+        const botonVolverAEmpezar = document.createElement("button");
+        botonVolverAEmpezar.textContent = "Volver a empezar";
+        botonVolverAEmpezar.id = "reset";
 
-seccionBotones.appendChild(botonVerEquipo);
-seccionBotones.appendChild(botonConfirmarEquipo);
-seccionBotones.appendChild(botonVolverAEmpezar)
-botonVolverAEmpezar.addEventListener ("click", resetear)
-botonVerEquipo.addEventListener("click", mostrarEquipo);
-botonConfirmarEquipo.addEventListener("click", confirmarEquipo)
+        seccionBotones.appendChild(botonVerEquipo);
+        seccionBotones.appendChild(botonConfirmarEquipo);
+        seccionBotones.appendChild(botonVolverAEmpezar);
+        botonVolverAEmpezar.addEventListener("click", resetear);
+        botonVerEquipo.addEventListener("click", mostrarEquipo);
+        botonConfirmarEquipo.addEventListener("click", confirmarEquipo);
     }
 }
+
 paginaInicial()
