@@ -1,0 +1,20 @@
+{
+  "name": "package",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Nicoappe21/Preentrega3JS-Appezzato.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Nicoappe21/Preentrega3JS-Appezzato/issues"
+  },
+  "homepage": "https://github.com/Nicoappe21/Preentrega3JS-Appezzato#readme",
+  "keywords": [],
+  "description": ""
+}

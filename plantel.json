@@ -1,0 +1,62 @@
+[
+    {
+    "nombre": "L.Messi",
+    "posicion": "Delantero",
+    "equipo": "Inter Miami",
+    "elegido": false 
+    },
+    {
+    "nombre": "J.Alvarez",
+    "posicion": "Delantero",
+    "equipo": "Manchester City",
+    "elegido": false 
+    },
+    {
+    "nombre": "E.Fernandez",
+    "posicion": "Mediocampista",
+    "equipo": "Chelsea",
+    "elegido": false 
+    },
+    {
+    "nombre": "A.Macallister",
+    "posicion": "Mediocampista",
+    "equipo": "Liverpool",
+    "elegido": false 
+    },
+    {
+    "nombre": "R.de Paul",
+    "posicion": "Mediocampista",
+    "equipo": "Atletico Madrid",
+    "elegido": false 
+    },
+    {
+    "nombre": "C.Romero",
+    "posicion": "Defensor",
+    "equipo": "Tottenham",
+    "elegido": false 
+    },
+    {
+    "nombre": "N.Tagliafico",
+    "posicion": "Defensor",
+    "equipo": "O.Marsella",
+    "elegido": false 
+    },
+    {
+    "nombre": "N.Molina",
+    "posicion": "Defensor",
+    "equipo": "Atletico Madrid",
+    "elegido": false 
+    },
+    {
+    "nombre": "A. Di Maria",
+    "posicion": "Delantero",
+    "equipo": "Benfica",
+    "elegido": false 
+    },
+    {
+    "nombre": "E.Martinez",
+    "posicion": "Arquero",
+    "equipo": "Aston Villa",
+    "elegido": false 
+    }
+]

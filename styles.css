@@ -1,3 +1,50 @@
+body {
+
+    background: linear-gradient(to bottom, #006600, #003300);
+    min-height: 100vh;
+    margin: 0;
+    padding: 0;
+    
+    font-family: Arial, sans-serif;
+    color: #ffffff; 
+}
+header {
+    text-align: center; 
+    padding: 20px; 
+    background-color: rgba(0, 0, 0, 0.5); 
+    font-family: 'Roboto', sans-serif; 
+    color: #fff; 
+    margin-top: 100px; 
+}  
+h1 {
+    font-size: 36px; 
+    margin: 0; 
+}
+
+h2 {
+    font-size: 24px; 
+    margin-top: 10px; 
+}
+
+input[type="text"] {
+    padding: 10px; 
+    font-size: 16px;
+}
+
+button {
+    padding: 10px 20px;
+    font-size: 18px; 
+    background-color: #4CAF50; 
+    border: none; 
+    color: #fff; 
+    cursor: pointer; 
+    transition: background-color 0.3s;
+    border-radius: 5px;
+}
+
+button:hover {
+    background-color: #134716; 
+}
 .section-jugadores{
     display: flex;
     flex-direction: column;    
@@ -8,7 +55,7 @@
 
 .carta-jugador{
     border: 2px solid black;
-    color: red;
+    color: #252c26;
     background-color: aquamarine;
     display: flex;
     flex-direction: column;
@@ -16,11 +63,21 @@
     width: 250px;
     height: 250px;
     align-items: center;
+    background-color: #9fa75b; 
+    border-radius: 28px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1)
 }
 
 .carta-jugador button{
     display: inline;
-   width: fit-content;
+    width: fit-content;
+    border-radius: 40px;
+    color: rgb(243, 243, 243);
+}
+
+.carta-jugador button[disabled] {
+    background-color: #a2aaa4;
+    cursor: default; 
 }
 
 #div-jugadores{
@@ -41,3 +98,56 @@
     margin: 10px;
 
 }
+#titulo-jugadores {
+    margin-top: 60px;
+    font-family: 'Malgun Gothic', cursive;
+    font-size: 48px;
+    color: #c1defc;
+}
+
+.boton-patear{
+    padding: 10px 20px;
+    font-size: 18px; 
+    background-color: #4CAF50; 
+    border: none; 
+    color: #fff; 
+    cursor: pointer; 
+    transition: background-color 0.3s;
+    border-radius: 5px;
+}
+#equipo-info {
+    color: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    font-size: 24px;
+}
+  
+  #equipo-info ul {
+    list-style: none;
+    padding: 0;
+}
+  
+  #equipo-info li {
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+}
+  
+.boton-patear {
+    padding: 15px 30px;
+    font-size: 20px;
+    background-color: #4CAF50;
+    border: none;
+    color: #fff;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    border-radius: 10px;
+    margin-left: 20px;
+}
+
+  
+  
+  
+  
+  
+  
