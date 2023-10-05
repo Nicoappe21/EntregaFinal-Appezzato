@@ -116,23 +116,24 @@ button:hover {
     border-radius: 5px;
 }
 #equipo-info {
+    margin-top: 80px;
     color: #fff;
     padding: 20px;
     border-radius: 10px;
     font-size: 24px;
 }
-  
-  #equipo-info ul {
+
+#equipo-info ul {
     list-style: none;
     padding: 0;
 }
-  
-  #equipo-info li {
+
+#equipo-info li {
     margin-bottom: 20px;
     display: flex;
     align-items: center;
 }
-  
+
 .boton-patear {
     padding: 15px 30px;
     font-size: 20px;
@@ -145,9 +146,11 @@ button:hover {
     margin-left: 20px;
 }
 
-  
-  
-  
-  
-  
-  
+.boton-patear[disabled]{
+    background-color: #a2aaa4;
+    cursor: default;   
+}
+
+.frase-jugador{
+    margin-left: 10px;
+}  

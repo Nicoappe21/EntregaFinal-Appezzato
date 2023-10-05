@@ -15,9 +15,8 @@ fetch(`plantel.json`)
 
 
 let jugadoresElegidos= []
-let jugadoresRivales= []
-
-
+let goles = 0
+let atajados = 0
 
 const sectionBienvenido = document.getElementById("bienvenido")
 let sectionJugadores = document.getElementById("jugadores")
@@ -28,6 +27,11 @@ const divSectionJugadores= document.getElementById("div-jugadores")
 let nombreUsuario = document.getElementById("titulo-jugadores");
 const seccionBotones = document.querySelector(".botones-lista");
 
+
+function recargarPagina() {
+    localStorage.clear()
+    location.reload();
+}
 
 function paginaInicial() {
     botonComenzar.addEventListener("click", iniciarJuego);
@@ -45,11 +49,16 @@ function paginaInicial() {
 }
 
 function iniciarJuego() {
-
     let usuario = usuarioInput.value;
     if (usuario === "") {
-        alert("Escribe un nombre para comenzar");
+        Swal.fire({
+            title: "Error",
+            text: "Elige un nombre para comenzar",
+            icon: "error",
+            confirmButtonText: `Aceptar`
+        });
     } else {
+
         sectionBienvenido.style.display = "none";
         
         nombreUsuario.innerText = ` Bienvenido ${usuario}, ahora eres el DT, elige 5 jugadores para patear los penales`;
@@ -91,18 +100,14 @@ function iniciarJuego() {
         botonVolverAEmpezar.textContent = "Volver a empezar";
         botonVolverAEmpezar.id = "reset";
 
-        seccionBotones.appendChild(botonVerEquipo);
+        seccionBotones.appendChild(botonVerEquipo); 
         seccionBotones.appendChild(botonConfirmarEquipo);
         seccionBotones.appendChild(botonVolverAEmpezar);
         botonVolverAEmpezar.addEventListener("click", resetear);
         botonVerEquipo.addEventListener("click", mostrarEquipo);
         botonConfirmarEquipo.addEventListener("click", confirmarEquipo);
     }
-}
-
-function chequearEquipo(){
-    let botonConvocar = document.getElementsByClassName("convocar")
-    jugadoresElegidos.length >= 5 ? botonConvocar.disabled : botonConvocar.disabled = false 
+    chequearEquipo()
 }
 
 function convocarJugador(idx, botonConvocar) {
@@ -112,6 +117,16 @@ function convocarJugador(idx, botonConvocar) {
         jugador.elegido = true;
         botonConvocar.disabled = true; 
     }
+    if (jugadoresElegidos.length >= 5) {
+        const botonesConvocar = document.querySelectorAll(".convocar");
+        botonesConvocar.forEach((boton) => {
+            boton.disabled = true;
+        });
+    }
+    localStorage.setItem("jugadoresElegidos", JSON.stringify(jugadoresElegidos))
+}
+
+function chequearEquipo(){
     if (jugadoresElegidos.length >= 5) {
         const botonesConvocar = document.querySelectorAll(".convocar");
         botonesConvocar.forEach((boton) => {
@@ -138,9 +153,15 @@ function resetear() {
     const equipoInfo = document.getElementById("equipo-info");
     equipoInfo.innerHTML = "";
 }
+
 function mostrarEquipo() {
     if (jugadoresElegidos.length === 0){
-        alert ("No hay jugadores convocados aún")
+        Swal.fire({
+            title: "Error",
+            text: "No hay jugadores convocados aún",
+            icon: "error",
+            confirmButtonText: `Aceptar`
+        })
     }
     else {
     const equipoInfo = document.getElementById("equipo-info");
@@ -154,40 +175,128 @@ function mostrarEquipo() {
     equipoInfo.appendChild(listaJugadores);
 }
 }
-function confirmarEquipo(){
-    
-    
-    if (jugadoresElegidos.length < 5){
-        alert("Elige 5 jugadores para tu equipo")
+
+function deshabilitarBotonesDireccion(jugador) { 
+            const izquierdaJugador = document.getElementById(`izquierda${jugador.nombre}`)
+            izquierdaJugador.disabled = true
+            const derechaJugador = document.getElementById(`derecha${jugador.nombre}`)
+            derechaJugador.disabled = true
+            const medioJugador = document.getElementById(`medio${jugador.nombre}`)
+            medioJugador.disabled = true
+        }
+
+function patear(jugador, direccion) {
+    const valorDireccion = {
+    Derecha: 1,
+    Centro: 2,
+    Izquierda: 3,
+    };
+    const resultado = document.getElementById("resultado")
+    console.log(resultado)
+    const numeroRandom = Math.floor(Math.random() * 3) + 1;
+    let fraseJugador= document.getElementById(`frase${jugador.nombre}`)
+    if (valorDireccion[direccion] === numeroRandom) {
+        fraseJugador.innerText = "Atajo el arquero!"
+        deshabilitarBotonesDireccion(jugador)
+        atajados++
+        resultado.innerText = `Goles ${goles} - ${atajados} Atajados`
+        chequearResultado() 
+        
     } else {
-    divSectionJugadores.style.display = "none"
-    nombreUsuario.style.display = "none"
-    seccionBotones.style.display= "none"
+        fraseJugador.innerText = "GOL!"
+        deshabilitarBotonesDireccion(jugador) 
+        goles++
+        resultado.innerText = `Goles ${goles} - ${atajados} Atajados`
+        chequearResultado() 
+    }       
+} 
+
+function chequearResultado(){
+    if (goles+atajados == 5 && goles > atajados){
+        Swal.fire({
+            title: `Ganaste ${goles} a ${atajados}`,
+            text: "Somos los campeones! ",
+            icon: "success",
+            confirmButtonText: `Aceptar`
+        })
+    } else if(goles + atajados == 5 && goles< atajados) {
+        Swal.fire({
+            title: `Perdiste ${atajados} a ${goles}`,
+            text: "Puedes intentarlo de nuevo",
+            icon: "error",
+            confirmButtonText: `Aceptar`
+        })
+    }
+}
+
+function confirmarEquipo() {
+    if (jugadoresElegidos.length < 5) {
+        Swal.fire({
+            title: "Error",
+            text: "Elige 5 jugadores para tu equipo",
+            icon: "error",
+            confirmButtonText: `Aceptar`
+        })
+    } else {
+    divSectionJugadores.style.display = "none";
+    nombreUsuario.style.display = "none";
+    seccionBotones.style.display = "none";
     const equipoInfo = document.getElementById("equipo-info");
-    equipoInfo.innerHTML = "Es el momento de la verdad, elige donde patear cada penal";
+    equipoInfo.innerHTML = "¡ES HORA DE PATEAR! ELIGE DONDE PATEAR TU PENAL, SI CONVIERTES AL MENOS 3 PENALES, SERAS EL CAMPEÓN. ¡MUCHA SUERTE!";
     const listaJugadores = document.createElement("ul");
     jugadoresElegidos.forEach(function (jugador) {
         const jugadorItem = document.createElement("li");
+        const botonIzquierda = document.createElement("button");
+        const botonMedio = document.createElement("button");
+        const botonDerecha = document.createElement("button");
+        const fraseJugador = document.createElement("h2");
+        fraseJugador.className = "frase-jugador"
+        fraseJugador.id = `frase${jugador.nombre}`
+
+        botonIzquierda.textContent = "Izquierda";
+        botonIzquierda.className = `${jugador.nombre} boton-patear`;
+        botonIzquierda.id =`izquierda${jugador.nombre}`
+        botonIzquierda.addEventListener("click", function () {
+            patear(jugador, "Izquierda"); 
+        });
+
+        botonMedio.textContent = "Medio";
+        botonMedio.className = `${jugador.nombre} boton-patear`;
+        botonMedio.id =`medio${jugador.nombre}`
+        botonMedio.addEventListener("click", function () {
+            patear(jugador, "Medio"); 
+        });
+
+        botonDerecha.textContent = "Derecha";
+        botonDerecha.className = `${jugador.nombre} boton-patear`;
+        botonDerecha.id =`derecha${jugador.nombre}`
+        botonDerecha.addEventListener("click", function () {
+            patear(jugador, "Derecha"); 
+        });
         jugadorItem.textContent = `${jugador.nombre}`;
-        const botonIzquierda = document.createElement("button")
-        botonIzquierda.className = "boton-patear"
-        botonIzquierda.innerText = "Izquierda"
-        jugadorItem.appendChild(botonIzquierda)
-        const botonMedio = document.createElement("button")
-        botonMedio.className = "boton-patear"
-        botonMedio.innerText = "Medio"
-        jugadorItem.appendChild(botonMedio)
-        const botonDerecha = document.createElement("button") 
-        botonDerecha.className = "boton-patear"
-        botonDerecha.innerText = "Derecha"
-        jugadorItem.appendChild(botonDerecha)
+        jugadorItem.appendChild(botonIzquierda);
+        jugadorItem.appendChild(botonMedio);
+        jugadorItem.appendChild(botonDerecha);
+        jugadorItem.appendChild(fraseJugador)
         listaJugadores.appendChild(jugadorItem);
     });
+    const resultado = document.createElement("h1")
+    resultado.id= "resultado"
+    resultado.innerText = `Goles ${goles} - ${atajados} Atajados ` 
+    const botonReiniciar = document.createElement("button")
+    botonReiniciar.className = "boton-reiniciar"
+    botonReiniciar.textContent = `Reiniciar`
+    botonReiniciar.addEventListener(`click`,recargarPagina)
     equipoInfo.appendChild(listaJugadores);
-    alert("Equipo confirmado")
-} 
+    equipoInfo.appendChild(resultado)
+    equipoInfo.appendChild(botonReiniciar);
+    Swal.fire({
+        title: "Vamos!",
+        text: "Tus pateadores estan listos",
+        icon: "success",
+        confirmButtonText: `Aceptar`
+    });
+    }
 }
 
-
 paginaInicial()
-git status
